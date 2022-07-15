@@ -17,6 +17,8 @@ In the near future, we will publish the following materials.
 
 ## Update
 
+[2022-07-15] Train script for ReCo(v1) is available!
+
 [2022-07-13] Preview of micro-register is available!
 
 [2022-07-12] The ReCo(v0) is available!
@@ -68,7 +70,7 @@ python test_register.py --backbone $BACKBONE --dst $DST --only_pred
 The prediction results will be save in `$DST` and the patches from left to right are `moving`, `fixed` and `moved`,
 respectively.
 
-## Get start (v0) (**current recommended**)
+## Get start (v0) (**Recommended for Now**)
 
 1. To use our pre-trained parameters of ECCV-22 for fusion, you need to prepare your dataset in `$ROOT/data/$NAME`.
 
@@ -87,7 +89,7 @@ python fuse.py --ir ../data/$DATA/ir --vi ../data/$DATA/vi --dst $SAVE_TO_WHERE
 
 3. Now, you will find the fusion results in `$SAVE_TO_WHERE`, this operation will create output folder automatically.
 
-## **Building:** ~~Get start (v1)~~
+## Get start (v1) **Preview Version**
 
 **Only recommended if you are intending in training ReCo+ yourself.**
 
@@ -112,10 +114,26 @@ part.**
 2. Activate your conda environment `conda activate $CONDA_ENV`.
 
 ```shell
+# set project path for python
+export PYTHONPATH="${PYTHONPATH}:$RECO_ROOT"
 # only train fuse part (ReCo) **current recommended**
-python train.py --register x --data data/$DATA --ckpt $CHECKPOINT_PATH --lr 1e-3
+python train.py --data data/$DATA --ckpt $CHECKPOINT_PATH --lr 1e-3
 # train registration and fuse (ReCo+)
 python train.py --register m --data data/$DATA --ckpt $CHECKPOINT_PATH --lr 1e-3 --deform $DEFORM_LEVEL
 ```
 
 The `$DEFORM_LEVEL` should be `easy`, `normal` or `hard`.
+
+⚠️ Limitations: As mentioned in the paper, when the difference between mid-wave infrared and visible images in your
+dataset is too large, the register may not converge properly.
+
+3. To generate the fusion images with pre-trained parameters, just run the following.
+
+```shell
+# set project path for python
+export PYTHONPATH="${PYTHONPATH}:$RECO_ROOT"
+# only fuse part (ReCo) **current recommended**
+python pred.py --data $data/$DATA --ckpt $CHECKPOINT_PATH --dst $SAVE_TO_WHERE
+# registration & fuse (ReCo+)
+ python pred.py --register m --data $data/$DATA --ckpt $CHECKPOINT_PATH --dst $SAVE_TO_WHERE
+```
