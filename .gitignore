@@ -1,0 +1,8 @@
+# JetBarins
+.idea/*
+
+# macOS
+.DS_*/*
+
+# data
+data/*
